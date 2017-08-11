@@ -11,7 +11,6 @@ using System.Collections.Generic;
 using System.IO;
 using Newtonsoft.Json;
 using System.Net.Http;
-using System.Net.Http.Headers;
 
 /// This dialog is the main bot dialog, which will call the Form Dialog and handle the results
 [Serializable]
