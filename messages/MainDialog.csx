@@ -1,5 +1,9 @@
 #load "BasicForm.csx"
 
+#r "Newtonsoft.Json"
+using System.Collections;
+using Newtonsoft.Json;
+
 using System;
 using System.Threading.Tasks;
 using Microsoft.Bot.Builder.Dialogs;
@@ -11,6 +15,7 @@ using System.Collections.Generic;
 using System.IO;
 using Newtonsoft.Json;
 using System.Net.Http;
+using System.Text;
 
 /// This dialog is the main bot dialog, which will call the Form Dialog and handle the results
 [Serializable]
@@ -39,16 +44,16 @@ public class MainDialog : IDialog<BasicForm>
             var form = await result;
             if (form != null)
             {
-                
+
                 var cashiersList = Helper.GetCashiers();
                 string cashier = cashiersList.FirstOrDefault();
-                if(form.Event == "Deposit")
+                if (form.Event == EventOptions.Deposit)
                 {
                     Deposit deposit = new Deposit();
                     deposit.RecipientEmailAddress = form.Email;
                     deposit.CashierEmailAddress = cashier;
                     deposit.Sum = form.Sum;
-                    //Helper.PostDeposit(deposit);
+                    WalletOp(deposit);
                 }
                 await context.PostAsync("Thanks for depositing " + form.Email + "! The cashier at which you deposited is: " + cashier);
             }
@@ -138,3 +143,34 @@ public class Deposit
     public string CashierEmailAddress { get; set; }
     public int Sum { get; set; }
 }
+
+
+
+
+
+public static async void WalletOp(Deposit deposit)
+{
+    //try
+    //{
+    var address = "http://walletapi20170810041706.azurewebsites.net/api/deposit";
+    using (var client = new HttpClient())
+    {
+        client.BaseAddress = new Uri(address);
+        var notificationDictionary = new Dictionary<string, string>
+                    {
+                        { "RecipientEmailAddress", deposit.RecipientEmailAddress },
+                        { "CashierEmailAddress", deposit.CashierEmailAddress },
+                        { "Sum", deposit.Sum.ToString()}
+                    };
+
+        var formContent = new StringContent(JsonConvert.SerializeObject(notificationDictionary),Encoding.UTF8, "application/json");
+        var result = await client.PostAsync(address, formContent);
+        string resultContent = await result.Content.ReadAsStringAsync();
+    }
+
+    //}
+    //catch (Exception ex)
+    //{
+    //}
+}
+
