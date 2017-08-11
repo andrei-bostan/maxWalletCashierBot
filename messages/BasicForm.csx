@@ -2,18 +2,19 @@ using System;
 using Microsoft.Bot.Builder.FormFlow;
 
 public enum EventOptions { Deposit = 1, Withdraw };
+public enum ConfirmationOptions { Yes = 1, No };
 
 // For more information about this template visit http://aka.ms/azurebots-csharp-form
 [Serializable]
 public class BasicForm
 {
-    [Prompt("Hi! What is your {&}?")]
-    public string Name { get; set; }
+    [Prompt("Hi! Would you like to start a deposit or withdrawal?")]
+    public ConfirmationOptions Confirmation { get; set; }
 
     [Prompt("Please select your activity {||}")]
     public EventOptions Event { get; set; }
 
-    [Prompt("How much RON would you like to deposit? {&}")]
+    [Prompt("How much RON would you like to deposit? Please type a number:")]
     public int Sum { get; set; }
 
     public static IForm<BasicForm> BuildForm()
