@@ -8,7 +8,9 @@ using Newtonsoft.Json;
 
 public enum EventOptions { Deposit = 1, Withdraw };
 
-List<string> CahisersOptions = Helper.GetCashiers();
+List<Enum> CahisersOptions = Helper.GetCashiers().ConvertAll(delegate (string x) {
+    return (Enum)Enum.Parse(typeof(Enum), x);
+});
 
 // For more information about this template visit http://aka.ms/azurebots-csharp-form
 [Serializable]
