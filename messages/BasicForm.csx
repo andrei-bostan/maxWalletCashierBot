@@ -1,18 +1,18 @@
 using System;
 using Microsoft.Bot.Builder.FormFlow;
 
-public enum CarOptions { Convertible = 1, SUV, EV };
+public enum EventOptions { Deposit = 1, Withdraw };
 public enum ColorOptions { Red = 1, White, Blue };
 
 // For more information about this template visit http://aka.ms/azurebots-csharp-form
 [Serializable]
 public class BasicForm
 {
-    [Prompt("Hi! What is your {&}?")]
+    [Prompt("Hi! What is your name {&}?")]
     public string Name { get; set; }
 
-    [Prompt("Please select your favorite car type {||}")]
-    public CarOptions Car { get; set; }
+    [Prompt("Please select your activity {||}")]
+    public EventOptions Event { get; set; }
 
     [Prompt("Please select your favorite {&} {||}")]
     public ColorOptions Color { get; set; }
