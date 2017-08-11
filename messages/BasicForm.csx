@@ -14,7 +14,7 @@ public class BasicForm
     [Prompt("Please select your activity {||}")]
     public EventOptions Event { get; set; }
 
-    [Prompt("How much RON would you like to deposit? Please type a number:")]
+    [Prompt("How much RON would you like to deposit or withdraw? Please type a number:")]
     public int Sum { get; set; }
     public static IForm<BasicForm> BuildForm()
     {
