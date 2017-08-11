@@ -10,6 +10,7 @@ using System.Linq;
 using System.Collections.Generic;
 using System.IO;
 using Newtonsoft.Json;
+using System.Net.Http;
 
 /// This dialog is the main bot dialog, which will call the Form Dialog and handle the results
 [Serializable]
@@ -40,8 +41,16 @@ public class MainDialog : IDialog<BasicForm>
             {
                 
                 var cashiersList = Helper.GetCashiers();
-                string cashiers = string.Join(",", cashiersList);
-                await context.PostAsync("Thanks for depositing " + form.Email + "! Our cashiers are: " + cashiers);
+                string cashier = cashiersList.FirstOrDefault();
+                if(form.Event == "Deposit")
+                {
+                    Deposit deposit = new Deposit();
+                    deposit.RecipientEmailAddress = form.Email;
+                    deposit.CashierEmailAddress = cashier;
+                    deposit.Sum = form.Sum;
+                    Helper.PostDeposit(deposit);
+                }
+                await context.PostAsync("Thanks for depositing " + form.Email + "! The cashier at which you deposited is: " + cashier);
             }
             else
             {
@@ -93,10 +102,43 @@ public static class Helper
 
         return results;
     }
+
+    public HttpResponseMessage PostDeposit(Deposit deposit)
+    {
+        string URL_Domain = "http://walletapi20170810041706.azurewebsites.net/api/";
+        
+        try
+        {
+            string apiUrl = URL_Domain + "Deposit";
+
+            var client = new HttpClient();
+            var values = new Dictionary<string, string>()
+        {
+            {"RecipientEmailAddress", deposit.RecipientEmailAddress},
+            {"CashierEmailAddress", deposit.CashierEmailAddress},
+            {"Sum", deposit.Sum}
+        };
+            var content = new FormUrlEncodedContent(values);
+
+            var response = await client.PostAsync(apiUrl, content);
+            response.EnsureSuccessStatusCode();
+        }
+
+        catch (Exception es)
+        {
+        }
+    }
 }
 
 public class Cashier
 {
     public int Id { get; set; }
     public string EmailAddress { get; set; }
+}
+
+public class Deposit
+{
+    public string RecipientEmailAddress { get; set; }
+    public string CashierEmailAddress { get; set; }
+    public int Sum { get; set; }
 }
