@@ -34,7 +34,6 @@ public class BasicForm
         .Field(nameof(BasicForm.Sum))
         .Field(new FieldReflector<BasicForm>(nameof(BasicForm.Cashiers))
                     .SetType(null)
-                    .SetPrompt(PerLinePromptAttribute("Please select the cashier: {||}"))
                     .SetDefine((state, field) =>
                     {
                         
@@ -50,14 +49,6 @@ public class BasicForm
         .AddRemainingFields()
         .Build()
         ;
-    }
-
-    private static PromptAttribute PerLinePromptAttribute(string pattern)
-    {
-        return new PromptAttribute(pattern)
-        {
-            ChoiceStyle = ChoiceStyleOptions.PerLine
-        };
     }
 
     public static IFormDialog<BasicForm> BuildFormDialog(FormOptions options = FormOptions.PromptInStart)
