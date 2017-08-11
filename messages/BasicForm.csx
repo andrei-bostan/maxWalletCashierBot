@@ -18,7 +18,6 @@ public class BasicForm
     [Prompt("How much RON would you like to deposit? Please type a number:")]
     public int Sum { get; set; }
 
-    [Prompt("Which cashier do you want?")]
     public string Cashiers { get; set; }
 
     public static IForm<BasicForm> BuildForm()
