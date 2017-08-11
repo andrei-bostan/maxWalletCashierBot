@@ -34,14 +34,18 @@ public class MainDialog : IDialog<BasicForm>
 
     private async Task FormComplete(IDialogContext context, IAwaitable<BasicForm> result)
     {
-        var results = Helper.GetCashiers();
+        var cashiers = Helper.GetCashiers();
         try
         {
             var form = await result;
             if (form != null)
             {
-
-                await context.PostAsync("Thanks for completing the form you human! Just type anything to restart it." + results.FirstOrDefault());
+                await context.PostAsync("To which cashier would you like to send money?");
+                foreach (var cashier in cashiers)
+                {
+                    await context.PostAsync(cashier);
+                }
+                await context.PostAsync("Thanks for completing the form you human! Just type anything to restart it.");
             }
             else
             {
