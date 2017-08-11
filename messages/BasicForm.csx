@@ -8,7 +8,10 @@ using Newtonsoft.Json;
 
 public enum EventOptions { Deposit = 1, Withdraw };
 
-List<string> Cahisers = Helper.GetCashiers();
+static List<string> GetCashiersList()
+{
+    return Helper.GetCashiers();
+}
 
 // For more information about this template visit http://aka.ms/azurebots-csharp-form
 [Serializable]
@@ -21,12 +24,32 @@ public class BasicForm
     public int Sum { get; set; }
 
     [Prompt("To which cashier would you like to send the money? {||}")]
-    public Cahisers Cashier { get; set; }
+    public string Cashier { get; set; }
+
+    public List<CashiersOptions> Cashiers { get; set; }
 
     public static IForm<BasicForm> BuildForm()
     {
         // Builds an IForm<T> based on BasicForm
-        return new FormBuilder<BasicForm>().Build();
+        return new FormBuilder<BasicForm>()
+            .Field(new FieldReflector<BasicForm>(nameof(Cashier))
+                            .SetType(null)
+                            .SetDefine((state, field) =>
+                            {
+                                foreach (var prod in GetCashiersList())
+                                    field
+                                        .AddDescription(prod, prod)
+                                        .AddTerms(prod, prod);
+
+                                return Task.FromResult(true);
+                            }))
+                    .Field(nameof(Cashiers))
+                    .AddRemainingFields()
+                    .OnCompletionAsync(async (context, bugReport) =>
+                    {
+                        await context.PostAsync("Thanks for the form!");
+                    })
+                    .Build();
     }
 
     public static IFormDialog<BasicForm> BuildFormDialog(FormOptions options = FormOptions.PromptInStart)
