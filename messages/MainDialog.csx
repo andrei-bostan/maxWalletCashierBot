@@ -32,7 +32,7 @@ public class MainDialog : IDialog<BasicForm>
         context.Call(BasicForm.BuildFormDialog(FormOptions.PromptInStart), FormComplete);
     }
 
-    public async Task MessageReceivedWithoutFormAsync(IDialogContext context, IAwaitable argument)
+    public async Task MessageReceivedWithoutFormAsync(IDialogContext context, IAwaitable<IMessageActivity> argument)
     {
         var message = await argument;
         await context.PostAsync("You said: " + message.Text);
