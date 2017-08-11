@@ -8,14 +8,7 @@ using Newtonsoft.Json;
 
 public enum EventOptions { Deposit = 1, Withdraw };
 
-public class CashierOptions {
-    public List<string> CashierOptions()
-    {
-        this.Cashiers = Helper.GetCashiers();
-    }
-
-    public List<string> Cashiers { get; set; }
-}
+List<string> Cahisers = Helper.GetCashiers();
 
 // For more information about this template visit http://aka.ms/azurebots-csharp-form
 [Serializable]
@@ -28,7 +21,7 @@ public class BasicForm
     public int Sum { get; set; }
 
     [Prompt("To which cashier would you like to send the money? {||}")]
-    public CashierOptions Cashier { get; set; }
+    public Cahisers Cashier { get; set; }
 
     public static IForm<BasicForm> BuildForm()
     {
