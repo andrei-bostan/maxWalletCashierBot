@@ -27,7 +27,7 @@ public class BasicForm
         return new FormBuilder<BasicForm>()
         .Field(nameof(BasicForm.Event))
         .Field(nameof(BasicForm.Sum))
-        .Field(new FieldReflector<ItemQueue>(nameof(Cashiers))
+        .Field(new FieldReflector<BasicForm>(nameof(Cashiers))
             .SetType(null)
             .SetDefine((state, field) =>
             {
