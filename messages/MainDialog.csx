@@ -32,28 +32,13 @@ public class MainDialog : IDialog<BasicForm>
         context.Call(BasicForm.BuildFormDialog(FormOptions.PromptInStart), FormComplete);
     }
 
-    public async Task MessageReceivedWithoutFormAsync(IDialogContext context, IAwaitable<IMessageActivity> argument)
-    {
-        var message = await argument;
-        await context.PostAsync("You said: " + message.Text);
-    }
-
     private async Task FormComplete(IDialogContext context, IAwaitable<BasicForm> result, IAwaitable<IMessageActivity> argument)
     {
-        var cashiers = Helper.GetCashiers();
         try
         {
             var form = await result;
             if (form != null)
             {
-                await context.PostAsync("To which cashier would you like to send money?");
-                int order = 0;
-                foreach (var cashier in cashiers)
-                {
-                    order++;
-                    await context.PostAsync(order + ". " + cashier);
-                }
-                context.Wait(MessageReceivedWithoutFormAsync);
                 await context.PostAsync("Thanks for completing the form you human! Just type anything to restart it.");
             }
             else
@@ -70,48 +55,4 @@ public class MainDialog : IDialog<BasicForm>
     }
 
     
-}
-
-public static class Helper
-{
-    public static List<string> GetCashiers()
-    {
-        string URL_Domain = "http://walletapi20170810041706.azurewebsites.net/api/";
-        var results = new List<string>();
-        try
-        {
-            string Url = URL_Domain + "Cashier";
-
-            HttpWebRequest request = WebRequest.Create(Url) as HttpWebRequest;
-            request.Method = "GET";
-            request.ContentType = "application/json";
-            // Get response  
-            using (var response = request.GetResponse() as HttpWebResponse)
-            {
-                Stream responseStream = response.GetResponseStream();
-                using (var reader = new StreamReader(responseStream))
-                {
-                    // get the response as text
-                    string responseText = reader.ReadToEnd();
-
-                    // convert from text 
-                    var cahierResults = JsonConvert.DeserializeObject<List<Cashier>>(responseText);
-                    results = cahierResults.Select(c => c.EmailAddress).ToList();
-
-                }
-            }
-        }
-
-        catch (Exception es)
-        {
-        }
-
-        return results;
-    }
-}
-
-public class Cashier
-{
-    public int Id { get; set; }
-    public string EmailAddress { get; set; }
 }
