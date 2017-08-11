@@ -33,7 +33,7 @@ namespace ApiCalls
 
                         // convert from text 
                         var cahierResults = JsonConvert.DeserializeObject<List<Cashier>>(responseText);
-                        results = cahierResults.Select(c => c.Email).ToList();
+                        results = cahierResults.Select(c => c.EmailAddress).ToList();
                         
                     }
                 }
@@ -50,6 +50,6 @@ namespace ApiCalls
     public class Cashier
     {
         public int Id { get; set; }
-        public string Email { get; set; }
+        public string EmailAddress { get; set; }
     }
 }

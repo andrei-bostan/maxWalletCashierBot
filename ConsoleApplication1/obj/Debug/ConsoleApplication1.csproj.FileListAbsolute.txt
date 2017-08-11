@@ -1,0 +1,10 @@
+C:\Users\andrei.bostan\Documents\hackathon\ConsoleApplication1\bin\Debug\ConsoleApplication1.exe.config
+C:\Users\andrei.bostan\Documents\hackathon\ConsoleApplication1\bin\Debug\ConsoleApplication1.exe
+C:\Users\andrei.bostan\Documents\hackathon\ConsoleApplication1\bin\Debug\ConsoleApplication1.pdb
+C:\Users\andrei.bostan\Documents\hackathon\ConsoleApplication1\bin\Debug\ApiCalls.dll
+C:\Users\andrei.bostan\Documents\hackathon\ConsoleApplication1\bin\Debug\Newtonsoft.Json.dll
+C:\Users\andrei.bostan\Documents\hackathon\ConsoleApplication1\bin\Debug\ApiCalls.pdb
+C:\Users\andrei.bostan\Documents\hackathon\ConsoleApplication1\bin\Debug\Newtonsoft.Json.xml
+C:\Users\andrei.bostan\Documents\hackathon\ConsoleApplication1\obj\Debug\ConsoleApplication1.exe
+C:\Users\andrei.bostan\Documents\hackathon\ConsoleApplication1\obj\Debug\ConsoleApplication1.pdb
+C:\Users\andrei.bostan\Documents\hackathon\ConsoleApplication1\obj\Debug\ConsoleApplication1.csprojResolveAssemblyReference.cache
