@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.IO;
 using Newtonsoft.Json;
 using System.Net.Http;
+using System.Net.Http.Headers;
 
 /// This dialog is the main bot dialog, which will call the Form Dialog and handle the results
 [Serializable]
@@ -103,17 +104,25 @@ public static class Helper
         return results;
     }
 
-    public static void PostDeposit(Deposit deposit)
+    public async static void PostDeposit(Deposit deposit)
     {
         string URL_Domain = "http://walletapi20170810041706.azurewebsites.net/api/";
         string Url = URL_Domain + "Deposit";
 
         using (var client = new HttpClient())
         {
-            client.BaseAddress = new Uri(URL_Domain);
-            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            var values = new Dictionary<string, string>
+                {
+                    { "RecipientEmailAddress", deposit.RecipientEmailAddress },
+                    { "CashierEmailAddress", deposit.CashierEmailAddress },
+                    { "Sum", deposit.Sum.ToString()}
+                };
 
-             await client.PostAsJsonAsync("Deposit", deposit);
+            var content = new FormUrlEncodedContent(values);
+
+            var response = await client.PostAsync(Url, content);
+
+            var responseString = await response.Content.ReadAsStringAsync();
         }
     }
 }

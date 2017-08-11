@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -45,11 +47,40 @@ namespace ApiCalls
 
             return results;
         }
+
+        public async static void PostDeposit(Deposit deposit)
+        {
+            string URL_Domain = "http://walletapi20170810041706.azurewebsites.net/api/";
+            string Url = URL_Domain + "Deposit";
+
+            using (var client = new HttpClient())
+            {
+                var values = new Dictionary<string, string>
+                {
+                    { "RecipientEmailAddress", deposit.RecipientEmailAddress },
+                    { "CashierEmailAddress", deposit.CashierEmailAddress },
+                    { "Sum", deposit.Sum.ToString()}
+                };
+
+                var content = new FormUrlEncodedContent(values);
+
+                var response = await client.PostAsync(Url, content);
+
+                var responseString = await response.Content.ReadAsStringAsync();
+            }
+        }
     }
 
     public class Cashier
     {
         public int Id { get; set; }
         public string EmailAddress { get; set; }
+    }
+
+    public class Deposit
+    {
+        public string RecipientEmailAddress { get; set; }
+        public string CashierEmailAddress { get; set; }
+        public int Sum { get; set; }
     }
 }
