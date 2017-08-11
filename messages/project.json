@@ -3,7 +3,7 @@
     "net46":{
       "dependencies": {
         "Microsoft.Bot.Builder.Azure": "3.2.2",
-        "ApiCalls": ""
+        "ApiCalls": "1.0.0"
       }
     }
    }
