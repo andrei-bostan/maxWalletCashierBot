@@ -32,6 +32,12 @@ public class MainDialog : IDialog<BasicForm>
         context.Call(BasicForm.BuildFormDialog(FormOptions.PromptInStart), FormComplete);
     }
 
+    public virtual async Task MessageReceivedWithoutFormAsync(IDialogContext context, IAwaitable<IMessageActivity> argument)
+    {
+        var message = await argument;
+        return message;
+    }
+
     private async Task FormComplete(IDialogContext context, IAwaitable<BasicForm> result)
     {
         var cashiers = Helper.GetCashiers();
@@ -47,7 +53,8 @@ public class MainDialog : IDialog<BasicForm>
                     order++;
                     await context.PostAsync(order + ". " + cashier);
                 }
-                await context.PostAsync("Thanks for completing the form you human! Just type anything to restart it.");
+                var message = MessageReceivedWithoutFormAsync;
+                await context.PostAsync("Thanks for completing the form you human! Just type anything to restart it." + message);
             }
             else
             {
