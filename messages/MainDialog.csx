@@ -5,6 +5,7 @@ using System.Net;
 using System.Linq;
 using System.Collections.Generic;
 using System.IO;
+using ApiCalls;
 using System.Threading.Tasks;
 using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Builder.FormFlow;
@@ -33,12 +34,13 @@ public class MainDialog : IDialog<BasicForm>
 
     private async Task FormComplete(IDialogContext context, IAwaitable<BasicForm> result)
     {
+        List<string> cashiers = Helper.GetCashiers();
         try
         {
             var form = await result;
             if (form != null)
             {
-                //List<string> cashiers = Helper.GetCashiers();
+                
                 await context.PostAsync("Thanks for completing the form you human! Just type anything to restart it.");
             }
             else
