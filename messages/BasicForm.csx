@@ -18,25 +18,28 @@ public class BasicForm
     [Prompt("How much RON would you like to deposit? Please type a number:")]
     public int Sum { get; set; }
 
+    [Prompt("Which cashier do you want?")]
+    public string Cashiers { get; set; }
+
     public static IForm<BasicForm> BuildForm()
     {
         // Builds an IForm<T> based on BasicForm
         return new FormBuilder<BasicForm>()
         .Field(nameof(BasicForm.Event))
         .Field(nameof(BasicForm.Sum))
-        //.Field(new FieldReflector<ItemQueue>(nameof(ItemGroup))
-        //    .SetType(null)
-        //    .SetDefine((state, field) =>
-        //    {
-        //        List<string> groupList = GetItemGroups(state.ItemType.ToString());
+        .Field(new FieldReflector<ItemQueue>(nameof(Cashiers))
+            .SetType(null)
+            .SetDefine((state, field) =>
+            {
+                List<string> groupList = Helper.GetCashiers();
 
-        //        foreach (var group in groupList)
-        //            field
-        //                 .AddDescription(module, module)
-        //                 .AddTerms(module, module);
-        //        return Task.FromResult(true);
+                foreach (var group in groupList)
+                    field
+                         .AddDescription(module, module)
+                         .AddTerms(module, module);
+                return Task.FromResult(true);
 
-        //    }))
+            }))
         .AddRemainingFields()
         .Build()
         ;
