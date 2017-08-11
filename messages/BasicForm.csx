@@ -33,10 +33,12 @@ public class BasicForm
                 .SetType(null)
                 .SetDefine((state, field) =>
                 {
-                    foreach (var prod in Helper.GetCashiers())
+                    List<string> groupList = Helper.GetCashiers();
+
+                    foreach (var group in groupList)
                         field
-                            .AddDescription(prod, prod)
-                            .AddTerms(prod, prod);
+                             .AddDescription(module, module)
+                             .AddTerms(module, module);
                     return Task.FromResult(true);
 
                 }))
