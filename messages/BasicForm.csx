@@ -7,8 +7,7 @@ public enum EventOptions { Deposit = 1, Withdraw };
 [Serializable]
 public class BasicForm
 {
-    [Prompt("Let's start!")]
-    [Prompt("Please select your activity {||}")]
+    [Prompt("Let's start! Please select your activity {||}")]
     public EventOptions Event { get; set; }
 
     [Prompt("How much RON would you like to deposit? Please type a number:")]
