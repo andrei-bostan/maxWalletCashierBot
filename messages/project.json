@@ -3,7 +3,8 @@
     "net46":{
       "dependencies": {
         "Microsoft.Bot.Builder.Azure": "3.2.2",
-        "Newtonsoft.Json": "10.0.3"
+        "Newtonsoft.Json": "10.0.3",
+        "System.Net.Http": "4.3.2"
       }
     }
    }

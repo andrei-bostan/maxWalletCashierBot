@@ -10,6 +10,7 @@ using System.Linq;
 using System.Collections.Generic;
 using System.IO;
 using Newtonsoft.Json;
+using System.Net.Http;
 
 /// This dialog is the main bot dialog, which will call the Form Dialog and handle the results
 [Serializable]
@@ -107,27 +108,12 @@ public static class Helper
         string URL_Domain = "http://walletapi20170810041706.azurewebsites.net/api/";
         string Url = URL_Domain + "Deposit";
 
-        var httpWebRequest = (HttpWebRequest)WebRequest.Create(Url);
-        httpWebRequest.ContentType = "application/json";
-        httpWebRequest.Method = "POST";
-
-        using (var streamWriter = new StreamWriter(httpWebRequest.GetRequestStream()))
+        using (var client = new HttpClient())
         {
-            string json = "{\"RecipientEmailAddress\":\""+ deposit.RecipientEmailAddress +"\"," +
-                          "\"CashierEmailAddress\":\"" + deposit.CashierEmailAddress + "\"," +
-                          "\"Sum\":\"" + deposit.Sum + "\"}"
+            client.BaseAddress = new Uri(URL_Domain);
+            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
-                          ;
-
-            streamWriter.Write(json);
-            streamWriter.Flush();
-            streamWriter.Close();
-        }
-
-        var httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();
-        using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
-        {
-            var result = streamReader.ReadToEnd();
+             await client.PostAsJsonAsync("Deposit", deposit);
         }
     }
 }
