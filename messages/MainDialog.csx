@@ -38,14 +38,9 @@ public class MainDialog : IDialog<BasicForm>
             var form = await result;
             if (form != null)
             {
-
-
-                await context.PostAsync("Thanks for depositing! Our cashiers are: ");
-
-                foreach (var cashier in Helper.GetCashiers())
-                {
-                    await context.PostAsync(cashier);
-                }
+                var cashiersList = Helper.GetCashiers();
+                string cashiers = string.Join(",", cashiersList);
+                await context.PostAsync("Thanks for depositing! Our cashiers are: " + cashiers);
             }
             else
             {
