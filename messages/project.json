@@ -2,8 +2,7 @@
   "frameworks": {
     "net46":{
       "dependencies": {
-        "Microsoft.Bot.Builder.Azure": "3.2.2",
-        "ApiCalls": "1.0.0"
+        "Microsoft.Bot.Builder.Azure": "3.2.2"
       }
     }
    }

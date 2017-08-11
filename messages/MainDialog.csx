@@ -5,7 +5,6 @@ using System.Net;
 using System.Linq;
 using System.Collections.Generic;
 using System.IO;
-using ApiCalls;
 using System.Threading.Tasks;
 using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Builder.FormFlow;
