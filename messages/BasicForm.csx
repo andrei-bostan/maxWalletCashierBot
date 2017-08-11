@@ -26,17 +26,21 @@ public class BasicForm
         return new FormBuilder<BasicForm>()
         .Field(nameof(BasicForm.Event))
         .Field(nameof(BasicForm.Sum))
-        .Field(new FieldReflector<BasicForm>(nameof(Cashiers))
-            .SetType(null)
-            .SetDefine(async (state, field) =>
-            {
-                field
-                    .AddDescription("cookie", "Free cookie")
-                    .AddTerms("cookie", "cookie", "free cookie")
-                    .AddDescription("drink", "Free large drink")
-                    .AddTerms("drink", "drink", "free drink");
-                return true;
-            }))
+        .Field(new FieldReflector<BasicForm>(nameof(BasicForm.Cashiers))
+                    .SetType(null)
+                    .SetPrompt(PerLinePromptAttribute("Please select the cashier: {||}"))
+                    .SetDefine((state, field) =>
+                    {
+                        var cashiers = Helper.GetCashiers();
+                        foreach (var cashier in cashiers)
+                        {
+                            field
+                                .AddDescription(cashier, cashier)
+                                .AddTerms(cashier, cashier);
+                        }
+
+                        return Task.FromResult(true);
+                    }))
         .AddRemainingFields()
         .Build()
         ;
