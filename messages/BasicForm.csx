@@ -12,41 +12,36 @@ public enum EventOptions { Deposit = 1, Withdraw };
 [Serializable]
 public class BasicForm
 {
-    List<string> cashiers = new List<string>
-            {
-                "Office",
-                "SQL Server",
-                "Visual Studio"
-            };
+ 
     [Prompt("Please select your activity {||}")]
     public EventOptions Event { get; set; }
 
     [Prompt("How much RON would you like to deposit? Please type a number:")]
     public int Sum { get; set; }
 
-    public string Cashiers;
+    //public string Cashiers;
 
     public static IForm<BasicForm> BuildForm()
     {
         // Builds an IForm<T> based on BasicForm
         return new FormBuilder<BasicForm>()
-        .Field(nameof(BasicForm.Event))
-        .Field(nameof(BasicForm.Sum))
-        .Field(new FieldReflector<BasicForm>(nameof(BasicForm.Cashiers))
-                    .SetType(null)
-                    .SetDefine((state, field) =>
-                    {
+        //.Field(nameof(BasicForm.Event))
+        //.Field(nameof(BasicForm.Sum))
+        //.Field(new FieldReflector<BasicForm>(nameof(BasicForm.Cashiers))
+        //            .SetType(null)
+        //            .SetDefine((state, field) =>
+        //            {
                         
-                        foreach (var cashier in state.cashiers)
-                        {
-                            field
-                                .AddDescription(cashier, cashier)
-                                .AddTerms(cashier, cashier);
-                        }
+        //                foreach (var cashier in Helper.GetCashiers())
+        //                {
+        //                    field
+        //                        .AddDescription(cashier, cashier)
+        //                        .AddTerms(cashier, cashier);
+        //                }
 
-                        return Task.FromResult(true);
-                    }))
-        .AddRemainingFields()
+        //                return Task.FromResult(true);
+        //            }))
+        //.AddRemainingFields()
         .Build()
         ;
     }
