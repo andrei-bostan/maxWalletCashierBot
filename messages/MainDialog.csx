@@ -33,7 +33,7 @@ public class MainDialog : IDialog<BasicForm>
             var form = await result;
             if (form != null)
             {
-                await context.PostAsync("Thanks for completing the form! Just type anything to restart it.");
+                await context.PostAsync("Thanks for completing the form you human! Just type anything to restart it.");
             }
             else
             {
