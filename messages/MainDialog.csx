@@ -1,11 +1,6 @@
 #load "BasicForm.csx"
 
 using System;
-using System.Net;
-using System.Linq;
-using System.Collections.Generic;
-using System.IO;
-using Newtonsoft.Json;
 using System.Threading.Tasks;
 using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Builder.FormFlow;
@@ -15,7 +10,6 @@ using Microsoft.Bot.Connector;
 [Serializable]
 public class MainDialog : IDialog<BasicForm>
 {
-    
     public MainDialog()
     {
     }
@@ -32,14 +26,14 @@ public class MainDialog : IDialog<BasicForm>
         context.Call(BasicForm.BuildFormDialog(FormOptions.PromptInStart), FormComplete);
     }
 
-    private async Task FormComplete(IDialogContext context, IAwaitable<BasicForm> result, IAwaitable<IMessageActivity> argument)
+    private async Task FormComplete(IDialogContext context, IAwaitable<BasicForm> result)
     {
         try
         {
             var form = await result;
             if (form != null)
             {
-                await context.PostAsync("Thanks for completing the form you human! Just type anything to restart it.");
+                await context.PostAsync("Thanks for completing the form! Just type anything to restart it.");
             }
             else
             {
@@ -53,6 +47,4 @@ public class MainDialog : IDialog<BasicForm>
 
         context.Wait(MessageReceivedAsync);
     }
-
-    
 }
