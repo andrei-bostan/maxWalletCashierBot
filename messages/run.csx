@@ -50,7 +50,7 @@ public static async Task<object> Run(HttpRequestMessage req, TraceWriter log)
                             {
                                 reply.Text += $" {newMember.Name}";
                             }
-                            reply.Text += "!";
+                            reply.Text += "! Let's start!";
                             await client.Conversations.ReplyToActivityAsync(reply);
                         }
                     }
