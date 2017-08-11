@@ -12,6 +12,12 @@ public enum EventOptions { Deposit = 1, Withdraw };
 [Serializable]
 public class BasicForm
 {
+    List<string> cashiers = new List<string>
+            {
+                "Office",
+                "SQL Server",
+                "Visual Studio"
+            };
     [Prompt("Please select your activity {||}")]
     public EventOptions Event { get; set; }
 
@@ -31,12 +37,7 @@ public class BasicForm
                     .SetPrompt(PerLinePromptAttribute("Please select the cashier: {||}"))
                     .SetDefine((state, field) =>
                     {
-                        var cashiers = new List<string>
-            {
-                "Office",
-                "SQL Server",
-                "Visual Studio"
-            };
+                        
                         foreach (var cashier in state.cashiers)
                         {
                             field
@@ -49,6 +50,14 @@ public class BasicForm
         .AddRemainingFields()
         .Build()
         ;
+    }
+
+    private static PromptAttribute PerLinePromptAttribute(string pattern)
+    {
+        return new PromptAttribute(pattern)
+        {
+            ChoiceStyle = ChoiceStyleOptions.PerLine
+        };
     }
 
     public static IFormDialog<BasicForm> BuildFormDialog(FormOptions options = FormOptions.PromptInStart)
