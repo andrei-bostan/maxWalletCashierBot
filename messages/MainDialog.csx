@@ -34,7 +34,6 @@ public class MainDialog : IDialog<BasicForm>
 
     private async Task FormComplete(IDialogContext context, IAwaitable<BasicForm> result)
     {
-        List<string> cashiers = Helper.GetCashiers();
         try
         {
             var form = await result;
