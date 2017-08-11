@@ -10,7 +10,6 @@ using System.Linq;
 using System.Collections.Generic;
 using System.IO;
 using Newtonsoft.Json;
-using System.Net.Http;
 
 /// This dialog is the main bot dialog, which will call the Form Dialog and handle the results
 [Serializable]
@@ -103,29 +102,32 @@ public static class Helper
         return results;
     }
 
-    public HttpResponseMessage PostDeposit(Deposit deposit)
+    public static void PostDeposit(Deposit deposit)
     {
         string URL_Domain = "http://walletapi20170810041706.azurewebsites.net/api/";
-        
-        try
-        {
-            string apiUrl = URL_Domain + "Deposit";
+        string Url = URL_Domain + "Deposit";
 
-            var client = new HttpClient();
-            var values = new Dictionary<string, string>()
-        {
-            {"RecipientEmailAddress", deposit.RecipientEmailAddress},
-            {"CashierEmailAddress", deposit.CashierEmailAddress},
-            {"Sum", deposit.Sum}
-        };
-            var content = new FormUrlEncodedContent(values);
+        var httpWebRequest = (HttpWebRequest)WebRequest.Create(Url);
+        httpWebRequest.ContentType = "application/json";
+        httpWebRequest.Method = "POST";
 
-            var response = await client.PostAsync(apiUrl, content);
-            response.EnsureSuccessStatusCode();
+        using (var streamWriter = new StreamWriter(httpWebRequest.GetRequestStream()))
+        {
+            string json = "{\"RecipientEmailAddress\":\""+ deposit.RecipientEmailAddress +"\"," +
+                          "\"CashierEmailAddress\":\"" + deposit.CashierEmailAddress + "\"," +
+                          "\"Sum\":\"" + deposit.Sum + "\"}"
+
+                          ;
+
+            streamWriter.Write(json);
+            streamWriter.Flush();
+            streamWriter.Close();
         }
 
-        catch (Exception es)
+        var httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();
+        using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
         {
+            var result = streamReader.ReadToEnd();
         }
     }
 }
