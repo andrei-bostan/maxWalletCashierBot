@@ -27,22 +27,22 @@ public class BasicForm
     {
         // Builds an IForm<T> based on BasicForm
         return new FormBuilder<BasicForm>()
-            .Field(nameof(BasicForm.Event))
-            .Field(nameof(BasicForm.Sum))
-            //.Field(new FieldReflector<BasicForm>(nameof(Cashier))
-            //    .SetType(null)
-            //    .SetDefine((state, field) =>
-            //    {
-            //        List<string> groupList = Helper.GetCashiers();
+            //.Field(nameof(BasicForm.Event))
+            //.Field(nameof(BasicForm.Sum))
+            ////.Field(new FieldReflector<BasicForm>(nameof(Cashier))
+            ////    .SetType(null)
+            ////    .SetDefine((state, field) =>
+            ////    {
+            ////        List<string> groupList = Helper.GetCashiers();
 
-            //        foreach (var group in groupList)
-            //            field
-            //                 .AddDescription(module, module)
-            //                 .AddTerms(module, module);
-            //        return Task.FromResult(true);
+            ////        foreach (var group in groupList)
+            ////            field
+            ////                 .AddDescription(module, module)
+            ////                 .AddTerms(module, module);
+            ////        return Task.FromResult(true);
 
-            //    }))
-            .AddRemainingFields()
+            ////    }))
+            //.AddRemainingFields()
             .Build();
     }
 
