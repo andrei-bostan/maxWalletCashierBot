@@ -18,7 +18,7 @@ public class BasicForm
     [Prompt("How much RON would you like to deposit? Please type a number:")]
     public int Sum { get; set; }
 
-    public string Cashiers { get; set; }
+    public string Cashiers;
 
     public static IForm<BasicForm> BuildForm()
     {
@@ -27,16 +27,16 @@ public class BasicForm
         .Field(nameof(BasicForm.Event))
         .Field(nameof(BasicForm.Sum))
         .Field(new FieldReflector<BasicForm>(nameof(Cashiers))
-                            .SetType(null)
-                            .SetDefine((state, field) =>
-                            {
-                                foreach (var prod in Helper.GetCashiers())
-                                    field
-                                        .AddDescription(prod, prod)
-                                        .AddTerms(prod, prod);
-
-                                return Task.FromResult(true);
-                            }))
+            .SetType(null)
+            .SetDefine(async (state, field) =>
+            {
+                field
+                    .AddDescription("cookie", "Free cookie")
+                    .AddTerms("cookie", "cookie", "free cookie")
+                    .AddDescription("drink", "Free large drink")
+                    .AddTerms("drink", "drink", "free drink");
+                return true;
+            }))
         .AddRemainingFields()
         .Build()
         ;
