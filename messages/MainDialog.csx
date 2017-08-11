@@ -48,7 +48,7 @@ public class MainDialog : IDialog<BasicForm>
                     deposit.RecipientEmailAddress = form.Email;
                     deposit.CashierEmailAddress = cashier;
                     deposit.Sum = form.Sum;
-                    Helper.PostDeposit(deposit);
+                    //Helper.PostDeposit(deposit);
                 }
                 await context.PostAsync("Thanks for depositing " + form.Email + "! The cashier at which you deposited is: " + cashier);
             }
@@ -103,27 +103,27 @@ public static class Helper
         return results;
     }
 
-    public async static void PostDeposit(Deposit deposit)
-    {
-        string URL_Domain = "http://walletapi20170810041706.azurewebsites.net/api/";
-        string Url = URL_Domain + "Deposit";
+    //public async static void PostDeposit(Deposit deposit)
+    //{
+    //    string URL_Domain = "http://walletapi20170810041706.azurewebsites.net/api/";
+    //    string Url = URL_Domain + "Deposit";
 
-        using (var client = new HttpClient())
-        {
-            var values = new Dictionary<string, string>
-                {
-                    { "RecipientEmailAddress", deposit.RecipientEmailAddress },
-                    { "CashierEmailAddress", deposit.CashierEmailAddress },
-                    { "Sum", deposit.Sum.ToString()}
-                };
+    //    using (var client = new HttpClient())
+    //    {
+    //        var values = new Dictionary<string, string>
+    //            {
+    //                { "RecipientEmailAddress", deposit.RecipientEmailAddress },
+    //                { "CashierEmailAddress", deposit.CashierEmailAddress },
+    //                { "Sum", deposit.Sum.ToString()}
+    //            };
 
-            var content = new FormUrlEncodedContent(values);
+    //        var content = new FormUrlEncodedContent(values);
 
-            var response = await client.PostAsync(Url, content);
+    //        var response = await client.PostAsync(Url, content);
 
-            var responseString = await response.Content.ReadAsStringAsync();
-        }
-    }
+    //        var responseString = await response.Content.ReadAsStringAsync();
+    //    }
+    //}
 }
 
 public class Cashier
