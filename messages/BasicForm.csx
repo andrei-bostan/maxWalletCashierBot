@@ -21,7 +21,25 @@ public class BasicForm
     public static IForm<BasicForm> BuildForm()
     {
         // Builds an IForm<T> based on BasicForm
-        return new FormBuilder<BasicForm>().Build();
+        return new FormBuilder<BasicForm>()
+        .Field(nameof(BasicForm.Event))
+        .Field(nameof(BasicForm.Sum))
+        //.Field(new FieldReflector<ItemQueue>(nameof(ItemGroup))
+        //    .SetType(null)
+        //    .SetDefine((state, field) =>
+        //    {
+        //        List<string> groupList = GetItemGroups(state.ItemType.ToString());
+
+        //        foreach (var group in groupList)
+        //            field
+        //                 .AddDescription(module, module)
+        //                 .AddTerms(module, module);
+        //        return Task.FromResult(true);
+
+        //    }))
+        .AddRemainingFields()
+        .Build()
+        ;
     }
 
     public static IFormDialog<BasicForm> BuildFormDialog(FormOptions options = FormOptions.PromptInStart)
