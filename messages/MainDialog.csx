@@ -41,9 +41,11 @@ public class MainDialog : IDialog<BasicForm>
             if (form != null)
             {
                 await context.PostAsync("To which cashier would you like to send money?");
+                int order = 0;
                 foreach (var cashier in cashiers)
                 {
-                    await context.PostAsync(cashier);
+                    order++;
+                    await context.PostAsync(order + ". " + cashier);
                 }
                 await context.PostAsync("Thanks for completing the form you human! Just type anything to restart it.");
             }
