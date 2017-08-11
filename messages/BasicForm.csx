@@ -2,20 +2,19 @@ using System;
 using Microsoft.Bot.Builder.FormFlow;
 
 public enum EventOptions { Deposit = 1, Withdraw };
-public enum ColorOptions { Red = 1, White, Blue };
 
 // For more information about this template visit http://aka.ms/azurebots-csharp-form
 [Serializable]
 public class BasicForm
 {
-    [Prompt("Hi! What is your name {&}?")]
+    [Prompt("Hi! What is your {&}?")]
     public string Name { get; set; }
 
     [Prompt("Please select your activity {||}")]
     public EventOptions Event { get; set; }
 
-    [Prompt("Please select your favorite {&} {||}")]
-    public ColorOptions Color { get; set; }
+    [Prompt("How much RON would you like to deposit? {&}")]
+    public int Sum { get; set; }
 
     public static IForm<BasicForm> BuildForm()
     {
