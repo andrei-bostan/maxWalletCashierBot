@@ -37,7 +37,7 @@ public class BasicForm
                 "SQL Server",
                 "Visual Studio"
             };
-                        foreach (var cashier in cashiers)
+                        foreach (var cashier in state.cashiers)
                         {
                             field
                                 .AddDescription(cashier, cashier)
