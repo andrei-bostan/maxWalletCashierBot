@@ -28,18 +28,16 @@ public class BasicForm
         .Field(nameof(BasicForm.Event))
         .Field(nameof(BasicForm.Sum))
         .Field(new FieldReflector<BasicForm>(nameof(Cashiers))
-            .SetType(null)
-            .SetDefine((state, field) =>
-            {
-                List<string> groupList = Helper.GetCashiers();
+                            .SetType(null)
+                            .SetDefine((state, field) =>
+                            {
+                                foreach (var prod in Helper.GetCashiers())
+                                    field
+                                        .AddDescription(prod, prod)
+                                        .AddTerms(prod, prod);
 
-                foreach (var group in groupList)
-                    field
-                         .AddDescription(module, module)
-                         .AddTerms(module, module);
-                return Task.FromResult(true);
-
-            }))
+                                return Task.FromResult(true);
+                            }))
         .AddRemainingFields()
         .Build()
         ;
