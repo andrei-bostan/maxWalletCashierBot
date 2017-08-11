@@ -39,8 +39,8 @@ public class MainDialog : IDialog<BasicForm>
             var form = await result;
             if (form != null)
             {
-                var cashiers = Helper.GetCashiers();
-                await context.PostAsync("Thanks for completing the form you human! Just type anything to restart it." + cashiers.FirstOrDefault().Email);
+                List<string> cashiers = Helper.GetCashiers();
+                await context.PostAsync("Thanks for completing the form you human! Just type anything to restart it." + cashiers.FirstOrDefault());
             }
             else
             {

@@ -11,10 +11,10 @@ namespace ApiCalls
 {
     public static class Helper
     {
-        public static List<Cashier> GetCashiers()
+        public static List<string> GetCashiers()
         {
             string URL_Domain = "http://walletapi20170810041706.azurewebsites.net/api/";
-            var results = new List<Cashier>();
+            var results = new List<string>();
             try
             {
                 string Url = URL_Domain + "Cashier";
@@ -32,7 +32,8 @@ namespace ApiCalls
                         string responseText = reader.ReadToEnd();
 
                         // convert from text 
-                        results = JsonConvert.DeserializeObject<List<Cashier>>(responseText);
+                        var cahierResults = JsonConvert.DeserializeObject<List<Cashier>>(responseText);
+                        results = cahierResults.Select(c => c.Email).ToList();
                         
                     }
                 }
