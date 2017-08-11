@@ -5,7 +5,6 @@ using System.Net;
 using System.Linq;
 using System.Collections.Generic;
 using System.IO;
-using ApiClass.ApiClasses;
 using Newtonsoft.Json;
 using System.Threading.Tasks;
 using Microsoft.Bot.Builder.Dialogs;
@@ -41,7 +40,7 @@ public class MainDialog : IDialog<BasicForm>
             if (form != null)
             {
                 var cashiers = GetCashiers();
-                await context.PostAsync("Thanks for completing the form you human! Just type anything to restart it." + cashiers.FirstOrDefault().Email.ToString());
+                await context.PostAsync("Thanks for completing the form you human! Just type anything to restart it." + cashiers.FirstOrDefault().Email);
             }
             else
             {
@@ -90,4 +89,10 @@ public class MainDialog : IDialog<BasicForm>
         }
 
     }
+}
+
+public class Cashier
+{
+    public int Id { get; set; }
+    public string Email { get; set; }
 }
