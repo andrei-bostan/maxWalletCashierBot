@@ -20,8 +20,8 @@ public class BasicForm
     [Prompt("How much RON would you like to deposit? Please type a number:")]
     public int Sum { get; set; }
 
-//    [Prompt("To which cashier would you like to send the money? {||}")]
-    //public CahisersOptions Cashier { get; set; }
+    [Prompt("To which cashier would you like to send the money?")]
+    public string Cashier { get; set; }
 
     public static IForm<BasicForm> BuildForm()
     {
@@ -29,16 +29,14 @@ public class BasicForm
         return new FormBuilder<BasicForm>()
             .Field(nameof(BasicForm.Event))
             .Field(nameof(BasicForm.Sum))
-            .Field(new FieldReflector<BasicForm>(nameof(CashierOptions))
+            .Field(new FieldReflector<BasicForm>(nameof(Cashier))
                 .SetType(null)
                 .SetDefine((state, field) =>
                 {
-                    List<string> groupList = Helper.GetCashiers();
-
-                    foreach (var group in groupList)
+                    foreach (var prod in Helper.GetCashiers())
                         field
-                         .AddDescription(module, module)
-                         .AddTerms(module, module);
+                            .AddDescription(prod, prod)
+                            .AddTerms(prod, prod);
                     return Task.FromResult(true);
 
                 }))
