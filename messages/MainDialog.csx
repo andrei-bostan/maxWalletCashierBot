@@ -53,9 +53,25 @@ public class MainDialog : IDialog<BasicForm>
                     deposit.RecipientEmailAddress = form.Email;
                     deposit.CashierEmailAddress = cashier;
                     deposit.Sum = form.Sum;
-                    WalletOp(deposit);
+                    WalletDP(deposit);
+                    await context.PostAsync("Thanks for depositing " + form.Email + "! The cashier at which you deposited is: " + cashier);
                 }
-                await context.PostAsync("Thanks for depositing " + form.Email + "! The cashier at which you deposited is: " + cashier);
+                else if (form.Event == EventOptions.Withdraw)
+                {
+                    Withdraw wd = new Withdraw();
+                    wd.BeneficiaryEmailAddress = form.Email;
+                    wd.CashierEmailAddress = cashier;
+                    wd.Sum = form.Sum;
+                    var ret = await WalletWD(wd);
+                    if (ret == "1")
+                        await context.PostAsync("Thanks for withdraw " + form.Email + "! The cashier at which you withdraw is: " + cashier);
+                    else
+                        await context.PostAsync("Cannot withdraw: " + ret);
+                }
+                else
+                {
+                    await context.PostAsync("Thanks for nothing");
+                }
             }
             else
             {
@@ -145,10 +161,18 @@ public class Deposit
 }
 
 
+public class Withdraw
+{
+    public string BeneficiaryEmailAddress { get; set; }
+    public string CashierEmailAddress { get; set; }
+    public int Sum { get; set; }
+}
 
 
 
-public static async void WalletOp(Deposit deposit)
+
+
+public static async void WalletDP(Deposit deposit)
 {
     //try
     //{
@@ -163,7 +187,7 @@ public static async void WalletOp(Deposit deposit)
                         { "Sum", deposit.Sum.ToString()}
                     };
 
-        var formContent = new StringContent(JsonConvert.SerializeObject(notificationDictionary),Encoding.UTF8, "application/json");
+        var formContent = new StringContent(JsonConvert.SerializeObject(notificationDictionary), Encoding.UTF8, "application/json");
         var result = await client.PostAsync(address, formContent);
         string resultContent = await result.Content.ReadAsStringAsync();
     }
@@ -174,3 +198,43 @@ public static async void WalletOp(Deposit deposit)
     //}
 }
 
+public static async Task<String> WalletWD(Withdraw wd)
+{
+    //try
+    //{
+    var address = "http://walletapi20170810041706.azurewebsites.net/api/withdraw";
+    using (var client = new HttpClient())
+    {
+        client.BaseAddress = new Uri(address);
+        var notificationDictionary = new Dictionary<string, string>
+                    {
+                        { "BeneficiaryEmailAddress", wd.BeneficiaryEmailAddress },
+                        { "CashierEmailAddress", wd.CashierEmailAddress },
+                        { "Sum", wd.Sum.ToString()}
+                    };
+
+        var formContent = new StringContent(JsonConvert.SerializeObject(notificationDictionary), Encoding.UTF8, "application/json");
+        var result = await client.PostAsync(address, formContent);
+        if (result.IsSuccessStatusCode)
+        {
+            return "1";
+            //string resultContent = await result.Content.ReadAsStringAsync();
+        }
+        else
+        {
+            var msg = JsonConvert.DeserializeObject<Ret>(await result.Content.ReadAsStringAsync());
+
+            return msg.Message;
+        }
+    }
+
+    //}
+    //catch (Exception ex)
+    //{
+    //}
+}
+
+public class Ret
+{
+    public string Message { get; set; }
+}
