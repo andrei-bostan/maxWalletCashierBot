@@ -18,7 +18,7 @@ public class BasicForm
     [Prompt("How much RON would you like to deposit? Please type a number:")]
     public int Sum { get; set; }
 
-    //public string Cashiers;
+    public string Cashiers;
 
     public static IForm<BasicForm> BuildForm()
     {
@@ -26,21 +26,26 @@ public class BasicForm
         return new FormBuilder<BasicForm>()
         .Field(nameof(BasicForm.Event))
         .Field(nameof(BasicForm.Sum))
-        //.Field(new FieldReflector<BasicForm>(nameof(BasicForm.Cashiers))
-        //            .SetType(null)
-        //            .SetPrompt(PerLinePromptAttribute("Please select the cashier: {||}"))
-        //            .SetDefine((state, field) =>
-        //            {
-        //                var cashiers = Helper.GetCashiers();
-        //                foreach (var cashier in cashiers)
-        //                {
-        //                    field
-        //                        .AddDescription(cashier, cashier)
-        //                        .AddTerms(cashier, cashier);
-        //                }
+        .Field(new FieldReflector<BasicForm>(nameof(BasicForm.Cashiers))
+                    .SetType(null)
+                    .SetPrompt(PerLinePromptAttribute("Please select the cashier: {||}"))
+                    .SetDefine((state, field) =>
+                    {
+                        var cashiers = new List<string>
+            {
+                "Office",
+                "SQL Server",
+                "Visual Studio"
+            };
+                        foreach (var cashier in cashiers)
+                        {
+                            field
+                                .AddDescription(cashier, cashier)
+                                .AddTerms(cashier, cashier);
+                        }
 
-        //                return Task.FromResult(true);
-        //            }))
+                        return Task.FromResult(true);
+                    }))
         .AddRemainingFields()
         .Build()
         ;
